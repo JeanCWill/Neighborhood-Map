@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<html>
+    <head>
+        <style>
+            html, body {
+                font-family: Arial, sans-serif;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            #map {height: 100%;}
+
+            #iWindow h3 {
+                color: red;
+                margin-bottom: 0;
+            }
+
+            #iWindow h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+
+            #iWindow label {
+                font-weight: bold;
+                margin-top: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="fb-root"></div>
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId            : '1493345530702456',
+              autoLogAppEvents : true,
+              xfbml            : true,
+              version          : 'v2.11'
+            });
+            FB.AppEvents.logPageView();
+          };
+
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "https://connect.facebook.net/en_US/sdk.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+        </script>
+
+        <div id="map"></div>
+        <div id="error"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="js/app.js"></script>
+
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiNPgPBYFxyMXLmr0OMsF6t_Sl7vtctuw&v=3&callback=initMap">
+        </script>
+    </body>
+</html>
