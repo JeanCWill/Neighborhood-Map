@@ -1,62 +1,3 @@
-// var places = [
-//     {
-//         name: 'Baba Arguiles e Lounge',
-//         lat: -26.222833,
-//         long: -52.672056,
-//         fb: 'BabaArguilesLounge'
-//     },{
-//         name: 'Boteco Cana Benta',
-//         lat: -26.222823,
-//         long: -52.671262,
-//         fb: 'botecocanabenta'
-//     },{
-//         name: 'DOCK',
-//         lat: -26.221347,
-//         long: -52.672109,
-//         fb: 'dockcontainer'
-//     },{
-//         name: 'Avenida Bombar',
-//         lat: -26.218970,
-//         long: -52.672973,
-//         fb: 'AvenidaBombar'
-//     },{
-//         name: 'Planta Rock / Liberdade',
-//         lat: -26.231105,
-//         long: -52.661938,
-//         fb: 'plantarockliberdade'
-//     },{
-//         name: 'Benedito Bar & Trattoria',
-//         lat: -26.219796,
-//         long: -52.672624,
-//         fb: 'beneditotrattoria'
-//     },{
-//         name: 'Mecânica Meat\'n Beer',
-//         lat: -26.220442,
-//         long: -52.671177,
-//         fb: 'mecanicameatnbeer'
-//     },{
-//         name: 'ClanDestino\'s Pub',
-//         lat: -26.223397,
-//         long: -52.672743,
-//         fb: 'ClanDestinosPub'
-//     },{
-//         name: 'Bodeguero',
-//         lat: -26.223784,
-//         long: -52.671243,
-//         fb: 'soubodeguero'
-//     },{
-//         name: 'Snooker Pub',
-//         lat: -26.223958,
-//         long: -52.671501,
-//         fb: 'pancitosnooker'
-//     },{
-//         name: 'Lanchonete Sabiá',
-//         lat: -26.218033,
-//         long: -52.673403,
-//         fb: 'lanchonetesabia'
-//     }
-// ];
-
 var Place = function (data) {
     "use strict";
     this.id = ko.observable(data.id)
@@ -94,6 +35,7 @@ var ViewModel = function () {
 
     // Criar um array de locais
     this.placeList = ko.observableArray([]);
+    self.visible = ko.observableArray();
 
     // Inicia a infoWindow
     var infowindow = new google.maps.InfoWindow({
@@ -120,7 +62,6 @@ var ViewModel = function () {
         }
     });
 
-    console.log(self.placeList());
     self.addMarkers = function () {
         self.placeList().forEach(function (placeItem) {
 
@@ -155,33 +96,20 @@ var ViewModel = function () {
                 }, 500);
             });
         });
+
+        self.placeList().forEach(function (place) {
+            self.visible.push(place);
+        });
     }
 
     self.showInfo = function (placeItem) {
         google.maps.event.trigger(placeItem.marker, 'click');
-        self.hideElements();
     };
 
     self.toggleNav = ko.observable(false);
     this.navStatus = ko.pureComputed (function () {
         return self.toggleNav() === false ? 'nav' : 'navClosed';
         }, this);
-
-    self.hideElements = function (toggleNav) {
-        self.toggleNav(true);
-        return true;
-    };
-
-    self.showElements = function (toggleNav) {
-        self.toggleNav(false);
-        return true;
-    };
-
-    self.visible = ko.observableArray();
-
-    self.placeList().forEach(function (place) {
-        self.visible.push(place);
-    });
 
     self.userInput = ko.observable('');
 
