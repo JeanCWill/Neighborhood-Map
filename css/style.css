@@ -7,64 +7,64 @@ html, body {
 
 #map {
     height: 100%;
-    width: 80%;
-    float: right;
-}
-
-nav {
-    background-color: #CCCCCC;
-    height: 100%;
 }
 
 #pageTitle{
-    margin: 0 10px;
-}
-
-#pageTitle h2 {
-    margin: 0;
+    position: fixed;
+    top: 30px;
+    left: 2%;
+    width: 350px;
+    color: red;
 }
 
 #search {
-    border-radius: 5px 5px 5px 5px;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border: 1px solid #000000;
-    width: 18%;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border: 1px solid #0000003d;
+    width: 350px;
     height: 30px;
     font-size: 15px;
-    margin: 10px;
-    padding-left: 5px;
-}
-
-li {
-    margin: 10px 5px;
-    list-style-type: none;
-    border-bottom: 1px black solid;
-    width: 16%;
-}
-
-li :hover {
-    cursor: pointer;
-}
-
-/*#list-view {
     position: fixed;
-    height: 27%;
+    left: 2%;
+    top: 80px;
+}
+
+#list-view {
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border: 1px solid #0000003d;
+    background-color: #ffffffa8;
+    position: fixed;
+    height: auto;
     overflow: auto;
-    top: 85px;
-    left: 5%;
-    width: 20%;
-    background-color: #fff;
+    top: 113px;
+    left: 2%;
+    width: 350px;
     margin: 0;
     padding: 0;
     font-size: 15px;
-}*/
+}
+
+#list-view :hover {
+    cursor: pointer;
+}
+
+li {
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin-left: 5px;
+}
 
 #error {
     position: fixed;
     top: 350px;
-    left: 5%;
-    width: 20%;
+    left: 43%;
+    width: 240px;
+    background-color: white;
+    color: red;
+    padding: 10px;
 }
 
 #iWindow h3 {

@@ -7,25 +7,25 @@
     </head>
     <body>
         <div id="map"></div>
-        <nav>
-            <div id="pageTitle">
-                <h2>Bares e Restaurantes<br/>Pato Branco - PR</h2>
-            </div>
-            <input id="search" placeholder="Buscar por nome" data-bind="textInput: userInput, event: {keyup: filterMarkers}">
-            <div id="list-holder">
-                <ul id="list-view" data-bind="foreach: visible">
-                    <li id="list-name" data-bind="text: name, click: $parent.showInfo"></li>
-                </ul>
-            </div>
-        </nav>
-        <div id="error"></div>
+        <div id="pageTitle">
+            <h2>Pato Branco - PR</h2>
+        </div>
+        <input id="search" placeholder="Buscar por nome" data-bind="textInput: userInput, event: {keyup: filterMarkers}">
+        <div id="list-holder">
+            <ul id="list-view" data-bind="foreach: visible">
+                <li id="list-name" data-bind="text: name, click: $parent.showInfo"></li>
+            </ul>
+        </div>
+        <div id="error">
+            <h4>Foursquare indisponível.<br/>Por favor, tente novamente mais tarde.</h4>
+        </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/app.js"></script>
 
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiNPgPBYFxyMXLmr0OMsF6t_Sl7vtctuw&v=3&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=????&v=3&callback=initMap">
         </script>
     </body>
 </html>

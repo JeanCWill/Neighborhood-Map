@@ -31,6 +31,9 @@ function googleError() {
 var ViewModel = function () {
     "use strict";
 
+    $('#list-holder').hide();
+    $('#error').hide();
+
     var self = this;
 
     // Criar um array de locais
@@ -44,8 +47,15 @@ var ViewModel = function () {
 
     var marker;
 
+    //Seu ID de cliente da api do Foursquare
+    var clientIdFoursquare = '';
+
+    //Sua chave da api do Foursquare
+    var clientSecretFoursquare = '';
+
+    //Busca as localizações de bares na cidade de Pato Branco - PR na api do Foursquare
     $.ajax({
-        url: 'https://api.foursquare.com/v2/venues/search?near=pato+branco&categoryId=4d4b7105d754a06376d81259&client_id=N0TRERV452GJLTTPQIWNXXZR42XLIZPHVSFHAWO4JG2SJXSL&client_secret=SOPK5ATI2HIMCDKAYDASFZQXSUEDRH3W41GPDMJBDSEHVZDS&v=20171116',
+        url: 'https://api.foursquare.com/v2/venues/search?near=pato+branco&categoryId=4d4b7105d754a06376d81259&client_id=' + clientIdFoursquare + '&client_secret=' + clientSecretFoursquare + '&v=20171116',
         dataType: "json",
         success: function (data) {
             // Criar um objeto para cada item da lista
@@ -56,12 +66,13 @@ var ViewModel = function () {
             self.addMarkers();
         },
 
+        //Mostra a mensagem de erro caso não consiga acessar a api
         error: function (e) {
-            infowindow.setContent('<h5>Foursquare data is unavailable. Please try refreshing later.</h5>');
-            document.getElementById("error").innerHTML = "<h4>Foursquare data is unavailable. Please try refreshing later.</h4>";
+            $('#error').show();
         }
     });
 
+    //Adiciona os marcadores das localizações fornecidas pelo Foursquare
     self.addMarkers = function () {
         self.placeList().forEach(function (placeItem) {
 
@@ -72,12 +83,14 @@ var ViewModel = function () {
             });
             placeItem.marker = marker;
 
+            //Monta o conteudo da InfoWindow
             var contentString = '<div id="iWindow"><h3>' + placeItem.name() + '</h3>'
                                 + '<h4>- ' + placeItem.category() + '</h4>'
                                 + '<p><label>Endereço: </label>' + placeItem.address() + '</p>'
                                 + '<p><a target="_blank" href=https://www.google.com/maps/dir/Current+Location/' +
                                     placeItem.lat() + ',' + placeItem.lng() + '>Rotas</a></p></div>';
 
+            //Configura animação e conteudo da InfoWindow
             google.maps.event.addListener(placeItem.marker, 'click', function () {
                 infowindow.open(map, this);
                 placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -88,6 +101,7 @@ var ViewModel = function () {
                 map.setCenter(placeItem.marker.getPosition());
             });
 
+            //Adiciona o ponto no mapa
             google.maps.event.addListener(marker, 'click', function () {
                 infowindow.open(map, this);
                 placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -113,8 +127,18 @@ var ViewModel = function () {
 
     self.userInput = ko.observable('');
 
+    //Filtra os itens da listagem de acordo com a pesquisa
     self.filterMarkers = function () {
         var searchInput = self.userInput().toLowerCase();
+
+        //Mostra ou esconde a lista de localidades
+        if (searchInput == '') {
+            $('#list-holder').hide();
+        } else {
+            $('#list-holder').show();
+        }
+
+        //Esconde todas as marcações do mapa
         self.visible.removeAll();
         self.placeList().forEach(function (place) {
             place.marker.setVisible(false);
@@ -122,6 +146,8 @@ var ViewModel = function () {
                 self.visible.push(place);
             }
         });
+
+        //Adiciona somente as marcações que foram encontradas pela pesquisa
         self.visible().forEach(function (place) {
             place.marker.setVisible(true);
         });
