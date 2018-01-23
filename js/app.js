@@ -10,6 +10,7 @@ var Place = function (data) {
 };
 
 var map;
+var marker;
 function initMap() {
 
     map = new google.maps.Map(document.getElementById("map"), {
@@ -31,7 +32,6 @@ function googleError() {
 var ViewModel = function () {
     "use strict";
 
-    $('#list-holder').hide();
     $('#error').hide();
 
     var self = this;
@@ -44,8 +44,6 @@ var ViewModel = function () {
     var infowindow = new google.maps.InfoWindow({
         maxWidth: 200,
     });
-
-    var marker;
 
     //Seu ID de cliente da api do Foursquare
     var clientIdFoursquare = '';
@@ -63,7 +61,8 @@ var ViewModel = function () {
                 self.placeList.push(new Place(placeItem));
             });
 
-            self.addMarkers();
+            addMarkers(self.placeList());
+            self.filterMarkers();
         },
 
         //Mostra a mensagem de erro caso não consiga acessar a api
@@ -71,50 +70,6 @@ var ViewModel = function () {
             $('#error').show();
         }
     });
-
-    //Adiciona os marcadores das localizações fornecidas pelo Foursquare
-    self.addMarkers = function () {
-        self.placeList().forEach(function (placeItem) {
-
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(placeItem.lat(), placeItem.lng()),
-                map: map,
-                animation: google.maps.Animation.DROP
-            });
-            placeItem.marker = marker;
-
-            //Monta o conteudo da InfoWindow
-            var contentString = '<div id="iWindow"><h3>' + placeItem.name() + '</h3>'
-                                + '<h4>- ' + placeItem.category() + '</h4>'
-                                + '<p><label>Endereço: </label>' + placeItem.address() + '</p>'
-                                + '<p><a target="_blank" href=https://www.google.com/maps/dir/Current+Location/' +
-                                    placeItem.lat() + ',' + placeItem.lng() + '>Rotas</a></p></div>';
-
-            //Configura animação e conteudo da InfoWindow
-            google.maps.event.addListener(placeItem.marker, 'click', function () {
-                infowindow.open(map, this);
-                placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function () {
-                    placeItem.marker.setAnimation(null);
-                }, 500);
-                infowindow.setContent(contentString);
-                map.setCenter(placeItem.marker.getPosition());
-            });
-
-            //Adiciona o ponto no mapa
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.open(map, this);
-                placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function () {
-                    placeItem.marker.setAnimation(null);
-                }, 500);
-            });
-        });
-
-        self.placeList().forEach(function (place) {
-            self.visible.push(place);
-        });
-    }
 
     self.showInfo = function (placeItem) {
         google.maps.event.trigger(placeItem.marker, 'click');
@@ -130,13 +85,6 @@ var ViewModel = function () {
     //Filtra os itens da listagem de acordo com a pesquisa
     self.filterMarkers = function () {
         var searchInput = self.userInput().toLowerCase();
-
-        //Mostra ou esconde a lista de localidades
-        if (searchInput == '') {
-            $('#list-holder').hide();
-        } else {
-            $('#list-holder').show();
-        }
 
         //Esconde todas as marcações do mapa
         self.visible.removeAll();
@@ -154,3 +102,44 @@ var ViewModel = function () {
     };
 
 };
+
+//Google Maps
+//Adiciona os marcadores das localizações fornecidas pelo Foursquare
+function addMarkers(placeList) {
+    placeList.forEach(function (placeItem) {
+
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(placeItem.lat(), placeItem.lng()),
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
+        placeItem.marker = marker;
+
+        //Monta o conteudo da InfoWindow
+        var contentString = '<div id="iWindow"><h3>' + placeItem.name() + '</h3>'
+                            + '<h4>- ' + placeItem.category() + '</h4>'
+                            + '<p><label>Endereço: </label>' + placeItem.address() + '</p>'
+                            + '<p><a target="_blank" href=https://www.google.com/maps/dir/Current+Location/' +
+                                placeItem.lat() + ',' + placeItem.lng() + '>Rotas</a></p></div>';
+
+        //Configura animação e conteudo da InfoWindow
+        google.maps.event.addListener(placeItem.marker, 'click', function () {
+            infowindow.open(map, this);
+            placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+                placeItem.marker.setAnimation(null);
+            }, 500);
+            infowindow.setContent(contentString);
+            map.setCenter(placeItem.marker.getPosition());
+        });
+
+        //Adiciona o ponto no mapa
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, this);
+            placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+                placeItem.marker.setAnimation(null);
+            }, 500);
+        });
+    });
+}
