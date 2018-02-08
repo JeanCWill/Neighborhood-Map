@@ -40,11 +40,6 @@ var ViewModel = function () {
     this.placeList = ko.observableArray([]);
     self.visible = ko.observableArray();
 
-    // Inicia a infoWindow
-    var infowindow = new google.maps.InfoWindow({
-        maxWidth: 200,
-    });
-
     //Seu ID de cliente da api do Foursquare
     var clientIdFoursquare = '';
 
@@ -70,10 +65,6 @@ var ViewModel = function () {
             $('#error').show();
         }
     });
-
-    self.showInfo = function (placeItem) {
-        google.maps.event.trigger(placeItem.marker, 'click');
-    };
 
     self.toggleNav = ko.observable(false);
     this.navStatus = ko.pureComputed (function () {
@@ -106,6 +97,11 @@ var ViewModel = function () {
 //Google Maps
 //Adiciona os marcadores das localizações fornecidas pelo Foursquare
 function addMarkers(placeList) {
+    // Inicia a infoWindow
+    var infowindow = new google.maps.InfoWindow({
+        maxWidth: 200,
+    });
+
     placeList.forEach(function (placeItem) {
 
         marker = new google.maps.Marker({
@@ -142,4 +138,8 @@ function addMarkers(placeList) {
             }, 500);
         });
     });
+
+    self.showInfo = function (placeItem) {
+        google.maps.event.trigger(placeItem.marker, 'click');
+    };
 }
