@@ -92,6 +92,9 @@ var ViewModel = function () {
         });
     };
 
+    self.showInfo = function (placeItem) {
+        google.maps.event.trigger(placeItem.marker, 'click');
+    };
 };
 
 //Google Maps
@@ -138,8 +141,4 @@ function addMarkers(placeList) {
             }, 500);
         });
     });
-
-    self.showInfo = function (placeItem) {
-        google.maps.event.trigger(placeItem.marker, 'click');
-    };
 }

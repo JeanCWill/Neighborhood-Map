@@ -37,7 +37,7 @@ html, body {
     border: 1px solid #0000003d;
     background-color: #ffffffa8;
     position: fixed;
-    height: auto;
+    height: 80%;
     overflow: auto;
     top: 113px;
     left: 2%;
